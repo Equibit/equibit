@@ -13,10 +13,9 @@ import re
 import sys
 
 # Matches on the date format at the start of the log event
-TIMESTAMP_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z")
+TIMESTAMP_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}")
 
 LogEvent = namedtuple('LogEvent', ['timestamp', 'source', 'event'])
-
 
 def main():
     """Main function. Parses args, reads the log files and renders them as text or html."""
@@ -43,7 +42,6 @@ def main():
 
     print_logs(log_events, color=args.color, html=args.html)
 
-
 def read_logs(tmp_dir):
     """Reads log files.
 
@@ -59,14 +57,13 @@ def read_logs(tmp_dir):
 
     return heapq.merge(*[get_log_events(source, f) for source, f in files])
 
-
 def get_log_events(source, logfile):
     """Generator function that returns individual log events.
 
     Log events may be split over multiple lines. We use the timestamp
     regex match as the marker for a new log event."""
     try:
-        with open(logfile, 'r', encoding='utf-8') as infile:
+        with open(logfile, 'r') as infile:
             event = ''
             timestamp = ''
             for line in infile:
@@ -87,7 +84,6 @@ def get_log_events(source, logfile):
             yield LogEvent(timestamp=timestamp, source=source, event=event.rstrip())
     except FileNotFoundError:
         print("File %s could not be opened. Continuing without it." % logfile, file=sys.stderr)
-
 
 def print_logs(log_events, color=False, html=False):
     """Renders the iterator of log events into text or html."""
@@ -113,7 +109,6 @@ def print_logs(log_events, color=False, html=False):
         print(jinja2.Environment(loader=jinja2.FileSystemLoader('./'))
                     .get_template('combined_log_template.html')
                     .render(title="Combined Logs from testcase", log_events=[event._asdict() for event in log_events]))
-
 
 if __name__ == '__main__':
     main()
