@@ -178,6 +178,8 @@ CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(const CTransaction &txn) {
                            spendsCoinbase, sigOpCost, lp);
 }
 
+#ifdef BUILD_BTC
+
 /**
  * @returns a real block (0000000000013b8ab2cd513b0261a14096412195a72a0c4827d229dcc7e0f7af)
  *      with 9 txs.
@@ -189,7 +191,8 @@ CBlock getBlock13b8a()
     stream >> block;
     return block;
 }
-#ifndef BUILD_BTC
+
+#else  // BUILD_EQB
 
 /**
  * @returns a regtest block (2e94f7d578bd04feca8bb6e5616eb3b68607bb6b643c4b2f8d62c996cf5ee5a7)
