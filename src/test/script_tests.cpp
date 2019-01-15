@@ -988,8 +988,11 @@ BOOST_AUTO_TEST_CASE(script_json_test)
     // scripts.
     // If a witness is given, then the last value in the array should be the
     // amount (nValue) to use in the crediting tx
-    //UniValue tests = read_json(std::string(json_tests::script_tests, json_tests::script_tests + sizeof(json_tests::script_tests)));
+#ifdef BUILD_BTC
+    UniValue tests = read_json(std::string(json_tests::script_tests, json_tests::script_tests + sizeof(json_tests::script_tests)));
+#else // BUILD_EQB 
     UniValue tests = read_json(std::string(json_tests::eqb_script_tests, json_tests::eqb_script_tests + sizeof(json_tests::eqb_script_tests)));
+#endif // END_BUILD
 
     for (unsigned int idx = 0; idx < tests.size(); idx++) {
         UniValue test = tests[idx];
