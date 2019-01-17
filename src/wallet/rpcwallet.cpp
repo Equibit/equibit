@@ -3396,6 +3396,7 @@ UniValue bumpfee(const JSONRPCRequest& request)
 
 UniValue generate(const JSONRPCRequest& request)
 {
+#ifdef BUILD_BTC
     CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
 
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
@@ -3437,6 +3438,9 @@ UniValue generate(const JSONRPCRequest& request)
     }
 
     return generateBlocks(coinbase_script, num_generate, max_tries, true);
+#else // BUILD_EQB
+    throw std::runtime_error("generate is deprecated. Use generatetoaddress instead"); 
+#endif // END_BUILD
 }
 
 UniValue rescanblockchain(const JSONRPCRequest& request)
