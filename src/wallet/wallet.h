@@ -107,7 +107,11 @@ enum OutputType : int
     OUTPUT_TYPE_P2SH_SEGWIT,
     OUTPUT_TYPE_BECH32,
 
+#ifdef BUILD_BTC
     OUTPUT_TYPE_DEFAULT = OUTPUT_TYPE_P2SH_SEGWIT
+#else // BUILD_EQB
+    OUTPUT_TYPE_DEFAULT = OUTPUT_TYPE_BECH32
+#endif // END_BUILD
 };
 
 extern OutputType g_address_type;
