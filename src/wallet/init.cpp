@@ -178,16 +178,32 @@ bool WalletParameterInteraction()
     fWalletRbf = gArgs.GetBoolArg("-walletrbf", DEFAULT_WALLET_RBF);
 
     g_address_type = ParseOutputType(gArgs.GetArg("-addresstype", ""));
+
+#ifdef BUILD_BTC
     if (g_address_type == OUTPUT_TYPE_NONE) {
         return InitError(strprintf("Unknown address type '%s'", gArgs.GetArg("-addresstype", "")));
     }
+#else // BUILD_EQB
+    // Enforce BECH32 addresses
+    if (g_address_type != OUTPUT_TYPE_BECH32) {
+        return InitError(strprintf("Unknown address type '%s'", gArgs.GetArg("-addresstype", "")));
+    }
+#endif // END_BUILD
 
+#ifdef BUILD_BTC
     // If changetype is set in config file or parameter, check that it's valid.
     // Default to OUTPUT_TYPE_NONE if not set.
     g_change_type = ParseOutputType(gArgs.GetArg("-changetype", ""), OUTPUT_TYPE_NONE);
     if (g_change_type == OUTPUT_TYPE_NONE && !gArgs.GetArg("-changetype", "").empty()) {
         return InitError(strprintf("Unknown change type '%s'", gArgs.GetArg("-changetype", "")));
     }
+#else // BUILD_EQB
+    // Enforce BECH32 addresses
+    g_change_type = ParseOutputType(gArgs.GetArg("-changetype", ""), OUTPUT_TYPE_BECH32);
+    if (g_change_type != OUTPUT_TYPE_BECH32) {
+        return InitError(strprintf("Unknown change type '%s'", gArgs.GetArg("-changetype", "")));
+    }
+#endif // END_BUILD
 
     return true;
 }
