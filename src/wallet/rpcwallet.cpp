@@ -3396,13 +3396,13 @@ UniValue bumpfee(const JSONRPCRequest& request)
 
 UniValue generate(const JSONRPCRequest& request)
 {
-#ifdef BUILD_BTC
     CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
 
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         return NullUniValue;
     }
 
+#ifdef BUILD_BTC
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
         throw std::runtime_error(
             "generate nblocks ( maxtries )\n"
@@ -3417,6 +3417,23 @@ UniValue generate(const JSONRPCRequest& request)
             + HelpExampleCli("generate", "11")
         );
     }
+#else // BUILD_EQB
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
+        throw std::runtime_error(
+            "generate is deprecated. Use generatetoaddress instead.\n"
+            "generate nblocks ( maxtries )\n"
+            "\nMine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.\n"
+            "\nArguments:\n"
+            "1. nblocks      (numeric, required) How many blocks are generated immediately.\n"
+            "2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
+            "\nResult:\n"
+            "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "\nExamples:\n"
+            "\nGenerate 11 blocks\n"
+            + HelpExampleCli("generate", "11")
+        );
+    }
+#endif // END_BUILD
 
     int num_generate = request.params[0].get_int();
     uint64_t max_tries = 1000000;
@@ -3438,9 +3455,6 @@ UniValue generate(const JSONRPCRequest& request)
     }
 
     return generateBlocks(coinbase_script, num_generate, max_tries, true);
-#else // BUILD_EQB
-    throw std::runtime_error("generate is deprecated. Use generatetoaddress instead"); 
-#endif // END_BUILD
 }
 
 UniValue rescanblockchain(const JSONRPCRequest& request)
