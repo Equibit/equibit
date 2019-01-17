@@ -595,7 +595,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = { 0x04, 0x35, 0x87, 0xCF };  // Same as Bitcoin
         base58Prefixes[EXT_SECRET_KEY] = { 0x04, 0x35, 0x83, 0x94 };  // Same as Bitcoin
 
-        bech32_hrp = "eqbtest";
+        bech32_hrp = "eqbtestnet";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
