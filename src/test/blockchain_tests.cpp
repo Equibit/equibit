@@ -51,7 +51,7 @@ void TestDifficulty(uint32_t nbits, double expected_difficulty)
     double difficulty = GetDifficulty(chain, block_index);
     delete block_index;
 
-    std::cout << "difficulty = " << difficulty << std::endl;
+    // std::cout << "difficulty = " << difficulty << std::endl;
 
     RejectDifficultyMismatch(difficulty, expected_difficulty);
 }
@@ -116,17 +116,18 @@ BOOST_AUTO_TEST_CASE(get_difficulty_for_null_tip)
  */
 BOOST_AUTO_TEST_CASE(get_difficulty_for_null_block_index)
 {
-#ifdef BUILD_BTC
     CChain chain = CreateChainWithNbits(0x1df88f6f);
 
     double difficulty = GetDifficulty(chain, nullptr);
     delete chain.Tip();
 
+#ifdef BUILD_BTC
     double expected_difficulty = 0.004023;
+#else // BUILD_EQB
+    double expected_difficulty = 263.658369;
+#endif // END_BUILD
 
     RejectDifficultyMismatch(difficulty, expected_difficulty);
-#else // BUILD_EQB
-#endif // END_BUILD
 }
 
 /* Verify that difficulty is based upon the explicitly specified
@@ -135,7 +136,6 @@ BOOST_AUTO_TEST_CASE(get_difficulty_for_null_block_index)
  */
 BOOST_AUTO_TEST_CASE(get_difficulty_for_block_index_overrides_tip)
 {
-#ifdef BUILD_BTC
     CChain chain = CreateChainWithNbits(0x1df88f6f);
     /* This block index's nbits should be used
      * instead of the chain's when calculating difficulty.
@@ -146,14 +146,11 @@ BOOST_AUTO_TEST_CASE(get_difficulty_for_block_index_overrides_tip)
     delete chain.Tip();
     delete override_block_index;
 
+#ifdef BUILD_BTC
     RejectDifficultyMismatch(difficulty, 5913134931067755359633408.0);
 #else // BUILD_EQB
-#ifdef EQB_BREAK_TEST
-    BOOST_ERROR("TEST DISABLED!");
-    //! EQB_TODO: Update difficulty related tests 
+    RejectDifficultyMismatch(difficulty, 387523210842456415248935026688.0);
 #endif // END_BUILD
-#endif
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()
