@@ -727,7 +727,11 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     std::sort(vKeyBirth.begin(), vKeyBirth.end());
 
     // produce output
+#ifdef BUILD_BTC
     file << strprintf("# Wallet dump created by Bitcoin %s\n", CLIENT_BUILD);
+#else // BUILD_EQB
+    file << strprintf("# Wallet dump created by Equibit %s\n", CLIENT_BUILD);
+#endif // END_BUILD 
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
     file << strprintf("# * Best block at time of backup was %i (%s),\n", chainActive.Height(), chainActive.Tip()->GetBlockHash().ToString());
     file << strprintf("#   mined on %s\n", EncodeDumpTime(chainActive.Tip()->GetBlockTime()));
