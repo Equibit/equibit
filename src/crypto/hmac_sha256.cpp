@@ -4,6 +4,10 @@
 
 #include <crypto/hmac_sha256.h>
 
+#ifndef BUILD_BTC
+#include <eqb/sha3/sha3.h>
+#endif
+
 #include <string.h>
 
 CHMAC_SHA256::CHMAC_SHA256(const unsigned char* key, size_t keylen)
@@ -13,7 +17,11 @@ CHMAC_SHA256::CHMAC_SHA256(const unsigned char* key, size_t keylen)
         memcpy(rkey, key, keylen);
         memset(rkey + keylen, 0, 64 - keylen);
     } else {
+#ifdef BUILD_BTC
         CSHA256().Write(key, keylen).Finalize(rkey);
+#else  // BUILD_EQB
+        CSHA3().Write(key, keylen).Finalize(rkey);
+#endif // END_BUILD
         memset(rkey + 32, 0, 32);
     }
 
