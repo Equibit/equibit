@@ -380,14 +380,13 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
 }
 
 // EQB_TODO: Temporary method to mine a genesis block
-static CBlock MineGenesisBlock(Consensus::Params& consensus)
+static CBlock MineGenesisBlock(uint32_t time, Consensus::Params& consensus)
 {
     CBlock genesis;
     unsigned int nPoWTarget = UintToArith256(consensus.powLimit).GetCompact();
     bool filter = true;
     for (uint32_t nonce = 0; ; nonce++) {
-        // GMT: Sunday, November 25, 2018 5:02:59 PM
-        genesis = CreateGenesisBlock(1543165379, nonce, nPoWTarget, 1, GENESIS_BLOCK_REWARD);
+        genesis = CreateGenesisBlock(time, nonce, nPoWTarget, 1, GENESIS_BLOCK_REWARD);
         consensus.hashGenesisBlock = genesis.GetHash();
         if(nonce % 1000 == 0)
             std::cout << ".";
@@ -469,20 +468,21 @@ public:
         nDefaultPort = 8331;
         nPruneAfterHeight = 100000;
 
-        // genesis hash: 000042550b9e7a0bf450cd7c44c74d636f84af1d0e646d3c7099a318ea65b5e2
-        genesis = CreateGenesisBlock(1543165379, 7335, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
-        // EQB_TODO MineGenesisBlock is temporary
-        // genesis = MineGenesisBlock(consensus);
+        // Thu Feb 21 16:40:13 2019 GMT
+        genesis = CreateGenesisBlock(1550767213, 19525, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
+        //genesis = MineGenesisBlock(1550767213, consensus);
         consensus.hashGenesisBlock = genesis.GetHash();
-        // assert(consensus.hashGenesisBlock == uint256S("0x0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379"));
-        // assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("0000ab3a641e901eaea9cd5973308f810421a7acdae5defd8768083322f30e28"));
+        assert(genesis.hashMerkleRoot == uint256S("09177885eb8169b2af83a810da68b16f7910608c5ed0b025c5224f354015d357"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
         // This is fine at runtime as we'll fall back to using them as a oneshot if they dont support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-       // EQB_TODO Add EQB mainnet seeds
+        // EQB_TODO Add EQB mainnet seeds
+        vFixedSeeds.clear();
+        vSeeds.clear();
 
         base58Prefixes[PUBKEY_ADDRESS] = { 0x01, 0xb5, 0xd1 }; // "EQa" prefix on address. 
         base58Prefixes[SCRIPT_ADDRESS] = { 0x01, 0xb5, 0xfc }; // "EQs" prefix on address.
@@ -494,8 +494,6 @@ public:
 
         // EQB_TODO populate fixed seeds for Equibit network
         // vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-        vFixedSeeds.clear();
-        vSeeds.clear();
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -566,11 +564,12 @@ public:
         nDefaultPort = 18331;
         nPruneAfterHeight = 1000;
 
+        // GMT: Sunday, November 25, 2018 5:02:59 PM
         genesis = CreateGenesisBlock(1543165379, 7335, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
-        //genesis = MineGenesisBlock(consensus); // Use MineGenesisBlock if any parameters change
+        //genesis = MineGenesisBlock(1543165379, consensus); // Use MineGenesisBlock if any parameters change
         consensus.hashGenesisBlock = genesis.GetHash();
-        //assert(consensus.hashGenesisBlock == uint256S("0x0000e9b3a79f70fb0be95b38604636441323450731e9ee1b5ef410791dac7184"));
-        //assert(genesis.hashMerkleRoot == uint256S("0xea914133c255e8b47fb99d26b8627f90e12f5a9c3bc86269652d474d9814aaca"));
+        assert(consensus.hashGenesisBlock == uint256S("0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379"));
+        assert(genesis.hashMerkleRoot == uint256S("09177885eb8169b2af83a810da68b16f7910608c5ed0b025c5224f354015d357"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -585,7 +584,8 @@ public:
 
         bech32_hrp = "eqbtestnet";
 
-        vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+        // EQB_TODO
+        // vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
