@@ -424,8 +424,8 @@ public:
         strNetworkID = "main";
         consensus.nSubsidyAccelerationFactor = 1;
         consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7");
+        consensus.BIP34Height = 70;
+        consensus.BIP34Hash = uint256S("00000000d27f96dd2706bf3c7b4d739d210daf35ac76d89fde535566d5f0f177");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         // EQB_TODO temporary to mine genesis block below
