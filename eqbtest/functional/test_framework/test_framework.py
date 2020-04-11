@@ -330,8 +330,8 @@ class BitcoinTestFramework():
 
         For backwared compatibility of the python scripts with previous
         versions of the cache, this helper function sets mocktime to
-        GMT: Sunday, 25 November 2018 г., 18:02:59 + (201 * 10 * 60)"""
-        self.mocktime = 1543168979 + (201 * 10 * 60)
+        Thu Apr 9 18:30:32 EDT 2020 + (201 * 10 * 60)"""
+        self.mocktime = 1586471432 + (201 * 10 * 60)
 
     def disable_mocktime(self):
         self.mocktime = 0

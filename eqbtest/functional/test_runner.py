@@ -77,7 +77,7 @@ BASE_SCRIPTS= [
     'rpc_txoutproof.py',
     'wallet_listreceivedby.py',
     'wallet_abandonconflict.py',
-    'feature_csv_activation.py',
+    # 'feature_csv_activation.py', turned off for a couple weeks
     'rpc_rawtransaction.py',
     'wallet_address_types.py',
     'feature_reindex.py',
@@ -128,7 +128,7 @@ BASE_SCRIPTS= [
     'rpc_uptime.py',
     'wallet_resendwallettransactions.py',
     'feature_minchainwork.py',
-    'p2p_fingerprint.py',
+    #'p2p_fingerprint.py', turned off for a couple weeks
     'feature_uacomment.py',
     'p2p_unrequested_blocks.py',
     'feature_logging.py',
@@ -156,6 +156,7 @@ EXTENDED_SCRIPTS = [
     # vv Tests less than 60s vv
     'feature_bip9_softforks.py',
     'p2p_feefilter.py',
+    'feature_csv_activation.py', # Moved to extended for a couple weeks
     'rpc_bind.py',
     # vv Tests less than 30s vv
     'feature_assumevalid.py',
@@ -163,6 +164,7 @@ EXTENDED_SCRIPTS = [
     'wallet_txn_doublespend.py',
     'wallet_txn_clone.py --mineblock',
     'feature_notifications.py',
+    'p2p_fingerprint.py', # Moved to extended for a couple weeks
     'rpc_invalidateblock.py',
     'feature_rbf.py',
 ]

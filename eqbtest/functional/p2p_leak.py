@@ -97,7 +97,7 @@ class P2PLeakTest(BitcoinTestFramework):
         self.extra_args = [['-banscore='+str(banscore)]]
 
     def run_test(self):
-        self.nodes[0].setmocktime(1544046012)  # GMT: Wednesday, 5 December 2018 г., 21:40:12
+        self.nodes[0].setmocktime(1586471432 + (201 * 10 * 60))  # Thu Apr 9 18:30:32 EDT 2020 + (201 * 10 * 60)
 
         no_version_bannode = self.nodes[0].add_p2p_connection(CNodeNoVersionBan(), send_version=False)
         no_version_idlenode = self.nodes[0].add_p2p_connection(CNodeNoVersionIdle(), send_version=False)
