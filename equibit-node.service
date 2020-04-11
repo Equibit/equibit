@@ -1,0 +1,14 @@
+[Unit]
+Description=Equibit Node
+
+[Service]
+User=equibit
+WorkingDirectory=/home/equibit/node
+ExecStart=/home/equibit/node/start-node.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
