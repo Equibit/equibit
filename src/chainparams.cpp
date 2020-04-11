@@ -372,7 +372,7 @@ public:
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "WSJ - 03/Jan/2018 - Billionaire Wagers Millions On Bitcoin";
+    const char* pszTimestamp = "WSJ 09/Apr/2020 U.S. Toll Grows Amid Aid Debate";
     // the below script is a pay-to-pubkey (P2PK) script to address. 
     // genesis block produces 0 equibits 
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
@@ -391,7 +391,9 @@ static CBlock MineGenesisBlock(uint32_t time, Consensus::Params& consensus)
         if(nonce % 1000 == 0)
             std::cout << ".";
         if (CheckProofOfWork(consensus.hashGenesisBlock, nPoWTarget, consensus)) {
-            std::cout << std::endl  << "Target: " << nPoWTarget  << ".  " << std::endl << "genesis nonce: " << nonce << " hash: " << consensus.hashGenesisBlock.GetHex() << " " << std::endl;
+            std::cout << std::endl  << "Target: " << nPoWTarget  << ".  " << std::endl;
+            std::cout << "genesis nonce: " << nonce << " hash: " << consensus.hashGenesisBlock.GetHex() << " " << std::endl;
+            std::cout << "merkle root: " << genesis.hashMerkleRoot.GetHex() << " " << std::endl;
             break;
         }
     }
@@ -423,7 +425,7 @@ public:
         consensus.nSubsidyAccelerationFactor = 1;
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");
+        consensus.BIP34Hash = uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         // EQB_TODO temporary to mine genesis block below
@@ -468,21 +470,19 @@ public:
         nDefaultPort = 8331;
         nPruneAfterHeight = 100000;
 
-        // Thu Feb 21 16:40:13 2019 GMT
-        genesis = CreateGenesisBlock(1550767213, 19525, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
-        //genesis = MineGenesisBlock(1550767213, consensus);
+        // Thu Apr 9 18:30:32 EDT 2020
+        genesis = CreateGenesisBlock(1586471432, 76358, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
+        // genesis = MineGenesisBlock(1586471432, consensus);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0000ab3a641e901eaea9cd5973308f810421a7acdae5defd8768083322f30e28"));
-        assert(genesis.hashMerkleRoot == uint256S("09177885eb8169b2af83a810da68b16f7910608c5ed0b025c5224f354015d357"));
+        assert(consensus.hashGenesisBlock == uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7"));
+        assert(genesis.hashMerkleRoot == uint256S("f5614aca4abdd9e709e22e0f4ca28455a469c7fb8f0cff76cafdf598a8612f97"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
         // This is fine at runtime as we'll fall back to using them as a oneshot if they dont support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        // EQB_TODO Add EQB mainnet seeds
-        vFixedSeeds.clear();
-        vSeeds.clear();
+        //vSeeds.emplace_back("dnsseed.equibit.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = { 0x01, 0xb5, 0xd1 }; // "EQa" prefix on address. 
         base58Prefixes[SCRIPT_ADDRESS] = { 0x01, 0xb5, 0xfc }; // "EQs" prefix on address.
@@ -492,8 +492,7 @@ public:
 
         bech32_hrp = "eqb";
 
-        // EQB_TODO populate fixed seeds for Equibit network
-        // vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+        //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -502,7 +501,7 @@ public:
         checkpointData = {
             {
                 // EQB_TODO: Update the checkpoint data once enough blocks are mined 
-                {0, uint256S("0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379")},
+                {0, uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7")},
             }
         };
 
@@ -564,17 +563,17 @@ public:
         nDefaultPort = 18331;
         nPruneAfterHeight = 1000;
 
-        // GMT: Sunday, November 25, 2018 5:02:59 PM
-        genesis = CreateGenesisBlock(1543165379, 7335, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
-        //genesis = MineGenesisBlock(1543165379, consensus); // Use MineGenesisBlock if any parameters change
+        // Thu Apr 9 18:30:32 EDT 2020
+        genesis = CreateGenesisBlock(1586471432, 76358, 0x1f00ffff, 1, GENESIS_BLOCK_REWARD);
+        // genesis = MineGenesisBlock(1586471432, consensus);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379"));
-        assert(genesis.hashMerkleRoot == uint256S("09177885eb8169b2af83a810da68b16f7910608c5ed0b025c5224f354015d357"));
+        assert(consensus.hashGenesisBlock == uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7"));
+        assert(genesis.hashMerkleRoot == uint256S("f5614aca4abdd9e709e22e0f4ca28455a469c7fb8f0cff76cafdf598a8612f97"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        // EQB_TODO Add EQB testnet seeds
+        //vSeeds.emplace_back("testnet-dnsseed.equibit.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = { 0x03, 0x5e, 0x5d }; // "TQa" prefix on address
         base58Prefixes[SCRIPT_ADDRESS] = { 0x03, 0x5e, 0x87 }; // "TQs" prefix on address
@@ -584,8 +583,7 @@ public:
 
         bech32_hrp = "eqbtestnet";
 
-        // EQB_TODO
-        // vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+        //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
@@ -594,16 +592,15 @@ public:
         checkpointData = {
             {
                 // EQB_TODO: Update the checkpoint data once enough blocks are mined
-                {0, uint256S("0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379")},
+                {0, uint256S("00004074974e92b8d65ce302d00a6337b2f8e015d849fd7dca5b362c4d967ab7")},
             }
         };
 
         // EQB_TODO: Update chainTxData 
         chainTxData = ChainTxData{
-            // Data as of block 000000000000033cfa3c975eb83ecf2bb4aaedf68e6d279f6ed2b427c64caff9 (height 1260526)
-            1516903490,
-            17082348,
-            0.09
+            0,
+            0,
+            0
         };
 
     }
@@ -652,12 +649,11 @@ public:
         nDefaultPort = 18441;
         nPruneAfterHeight = 1000;
 
-        // 53fb84464c90add47a391100bf6aa3647d9b27ea835b7cc12b20255ebaa08c20
-        genesis = CreateGenesisBlock(1543165379, 1, 0x207fffff, 1, GENESIS_BLOCK_REWARD);
-        //genesis = MineGenesisBlock(consensus); // Use MineGenesisBlock if any parameters change
+        genesis = CreateGenesisBlock(1586471432, 0, 0x207fffff, 1, GENESIS_BLOCK_REWARD);
+        // genesis = MineGenesisBlock(1586471432, consensus); // Use MineGenesisBlock if any parameters change
         consensus.hashGenesisBlock = genesis.GetHash();
-        //assert(consensus.hashGenesisBlock == uint256S("0x1511c0510788e6bc4d8aaf1549e710b849651e16af9a4087ef29cb7880c2efee"));
-        //assert(genesis.hashMerkleRoot == uint256S("0xea914133c255e8b47fb99d26b8627f90e12f5a9c3bc86269652d474d9814aaca"));
+        assert(consensus.hashGenesisBlock == uint256S("08877851740698c68ccd002257ab6c447f8b63e83587606b8984932cfa86fa1e"));
+        assert(genesis.hashMerkleRoot == uint256S("f5614aca4abdd9e709e22e0f4ca28455a469c7fb8f0cff76cafdf598a8612f97"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -668,7 +664,7 @@ public:
         checkpointData = {
             {
                 // EQB_TODO: Update the checkpoint data once enough blocks are mined 
-                {0, uint256S("0000635252c23e52aed38fc7d6f2c8ec0c9a3c2ad677d3e53ad1f79584220379")},
+                {0, uint256S("08877851740698c68ccd002257ab6c447f8b63e83587606b8984932cfa86fa1e")},
             }
         };
         
