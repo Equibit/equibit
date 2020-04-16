@@ -482,7 +482,7 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they dont support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        //vSeeds.emplace_back("dnsseed.equibit.org");
+        vSeeds.emplace_back("dnsseed.equibit.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = { 0x01, 0xb5, 0xd1 }; // "EQa" prefix on address. 
         base58Prefixes[SCRIPT_ADDRESS] = { 0x01, 0xb5, 0xfc }; // "EQs" prefix on address.
@@ -573,7 +573,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        //vSeeds.emplace_back("testnet-dnsseed.equibit.org");
+        vSeeds.emplace_back("testnet-dnsseed.equibit.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = { 0x03, 0x5e, 0x5d }; // "TQa" prefix on address
         base58Prefixes[SCRIPT_ADDRESS] = { 0x03, 0x5e, 0x87 }; // "TQs" prefix on address
