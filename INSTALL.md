@@ -1,5 +1,6 @@
-Building Bitcoin
+Building Equibit
 ================
 
-See doc/build-*.md for instructions on building the various
-elements of the Bitcoin Core reference implementation of Bitcoin.
+Visit the Equibit wiki (https://github.com/Equibit/equibit/wiki) for build
+and deployment instructions
+
