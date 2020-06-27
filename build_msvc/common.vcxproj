@@ -7,6 +7,32 @@
           $(BuildDependsOn);
       </BuildDependsOn>
   </PropertyGroup>
+  <PropertyGroup>
+	<!-- Assumes vcpkg is cloned into the parent directory that contains equibit -->
+    <VCPkgDir>$(MSBuildThisFileDirectory)..\..\vcpkg\</VCPkgDir>
+	<LevelDBDir>$(MSBuildThisFileDirectory)..\..\leveldb\</LevelDBDir>
+    <IncludePath>$(VCPkgDir)installed\x64-windows-static\include;$(LevelDBDir)include;$(LevelDBDir)helpers\memenv;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VCPkgDir)installed\x64-windows-static\lib;$(LevelDBDir)release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>
+		boost_chrono-vc140-mt.lib;
+		boost_filesystem-vc140-mt.lib;
+		boost_program_options-vc140-mt.lib;
+		boost_random-vc140-mt.lib;
+		boost_thread-vc140-mt.lib;
+		event.lib;
+		leveldb.lib;
+		libcrypto.lib;
+		libdb48.lib;
+		libssl.lib;
+		libzmq-mt-s-4_3_3.lib;
+		secp256k1.lib;
+		%(AdditionalDependencies)
+	  </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <Target Name="CopyConfig"
           Inputs="$(MSBuildThisFileDirectory)bitcoin_config.h"
           Outputs="$(MSBuildThisFileDirectory)..\src\config\bitcoin-config.h">

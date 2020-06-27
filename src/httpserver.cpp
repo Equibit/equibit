@@ -18,6 +18,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+#include <deque>
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>

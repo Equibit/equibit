@@ -8,6 +8,10 @@
 #include <random.h>
 #include <thread>
 
+#ifdef _MSC_VER
+#include <deque>
+#endif
+
 /** Test Suite for CuckooCache
  *
  *  1) All tests should have a deterministic result (using insecure rand
