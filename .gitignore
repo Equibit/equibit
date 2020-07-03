@@ -137,3 +137,4 @@ contrib/devtools/split-debug.sh
 .idea
 eqbtest/.idea/*
 .vs/
+build_msvc/_int/

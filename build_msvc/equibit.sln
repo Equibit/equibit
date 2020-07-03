@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libequibit_consensus", "libequibitconsensus\libequibitconsensus.vcxproj", "{2B384FA8-9EE1-4544-93CB-0D733C25E8CE}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bench_equibit", "bench_equibit\bench_equibit.vcxproj", "{1125654E-E1B2-4431-8B5C-62EA9A2FEECB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "equibit-tx", "equibit-tx\equibit-tx.vcxproj", "{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "equibit-qt", "equibit-qt\equibit-qt.vcxproj", "{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,15 +163,23 @@ Global
 		{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Release|x64.Build.0 = Release|x64
 		{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Release|x86.ActiveCfg = Release|Win32
 		{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Release|x86.Build.0 = Release|Win32
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Debug|x64.ActiveCfg = Debug|x64
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Debug|x64.Build.0 = Debug|x64
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Debug|x86.ActiveCfg = Debug|Win32
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Debug|x86.Build.0 = Debug|Win32
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x64.ActiveCfg = Release|x64
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x64.Build.0 = Release|x64
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x86.ActiveCfg = Release|Win32
+		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A20B3367-968A-4B39-9CE5-CBD4FF41D03D}
-		                SolutionGuid = {4ABD1207-9A90-4EC9-A8EB-203638A2605D}
-		                        SolutionGuid = {2FB733C9-24CB-4BA5-A26B-F43DAD7996B7}
-		                                SolutionGuid = {D0CAE2D0-8DB1-4A0B-80EE-800AA6C64323}
 		        SolutionGuid = {DA7D16A6-E5F0-45B3-B194-C3FE64F1BFCD}
+		                                SolutionGuid = {D0CAE2D0-8DB1-4A0B-80EE-800AA6C64323}
+		                        SolutionGuid = {2FB733C9-24CB-4BA5-A26B-F43DAD7996B7}
+		                SolutionGuid = {4ABD1207-9A90-4EC9-A8EB-203638A2605D}
+		SolutionGuid = {A20B3367-968A-4B39-9CE5-CBD4FF41D03D}
 	EndGlobalSection
 EndGlobal

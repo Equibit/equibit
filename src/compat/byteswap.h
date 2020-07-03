@@ -61,6 +61,18 @@ inline uint64_t bswap_64(uint64_t x)
 }
 #endif // HAVE_DECL_BSWAP64 == 0
 
+#ifdef _MSC_VER
+
+// Protobuf will define these
+#ifndef bswap_16
+#include <stdlib.h>
+#define bswap_16(x) _byteswap_ushort(x)
+#define bswap_32(x) _byteswap_ulong(x)
+#define bswap_64(x) _byteswap_uint64(x)
+#endif // !bswap_16
+
+#endif // _MSC_VER
+
 #endif // defined(__APPLE__)
 
 #endif // BITCOIN_COMPAT_BYTESWAP_H
