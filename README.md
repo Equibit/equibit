@@ -14,7 +14,8 @@ with no central authority: managing transactions and issuing securities are carr
 collectively by the network. Equibit is the name of the open source software which enables 
 the use of this network.
 
-For download instructions and more information, please visit our Testnet Wiki: https://github.com/Equibit/Open-Testnet
+For download instructions and more information, please visit the Equibit Wiki:
+https://github.com/Equibit/equibit/wiki
 
 The original whitepaper published on arXiv.org: https://arxiv.org/abs/1612.06953
 
