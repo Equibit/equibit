@@ -47,6 +47,7 @@
 #include <QFileDialog>
 #include <QFont>
 #include <QLineEdit>
+#include <QProcess>
 #include <QSettings>
 #include <QTextDocument> // for Qt::mightBeRichText
 #include <QThread>
@@ -146,7 +147,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin: URI
-    if(!uri.isValid() || uri.scheme() != QString("bitcoin"))
+    if(!uri.isValid() || uri.scheme() != QString("equibit"))
         return false;
 
     SendCoinsRecipient rv;
@@ -428,7 +429,16 @@ bool openBitcoinConf()
     configFile.close();
     
     /* Open bitcoin.conf with the associated application */
-    return QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
+    if (QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig))))
+        return true;
+
+#ifdef WIN32
+    QString cmdLine = "notepad.exe \"" + boostPathToQString(pathConfig) + "\"";
+
+    return QProcess::startDetached(cmdLine);
+#else
+    return false;
+#endif
 }
 
 void SubstituteFonts(const QString& language)

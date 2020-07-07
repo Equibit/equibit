@@ -735,7 +735,7 @@ bool WalletModel::hdEnabled() const
 
 OutputType WalletModel::getDefaultAddressType() const
 {
-    return g_address_type;
+    return OUTPUT_TYPE_BECH32;
 }
 
 int WalletModel::getDefaultConfirmTarget() const
