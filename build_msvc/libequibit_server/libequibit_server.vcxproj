@@ -155,6 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\bitmsgfilter.cpp" />
+    <ClCompile Include="..\..\src\bitmsgman.cpp" />
+    <ClCompile Include="..\..\src\rpc\bitmessage.cpp" />
     <ClCompile Include="..\..\src\rpc\net.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\netrpc.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\netrpc.obj</ObjectFileName>

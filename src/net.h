@@ -9,6 +9,7 @@
 #include <addrdb.h>
 #include <addrman.h>
 #include <amount.h>
+#include <bitmsgfilter.h>
 #include <bloom.h>
 #include <compat.h>
 #include <hash.h>
@@ -49,6 +50,8 @@ static const int TIMEOUT_INTERVAL = 20 * 60;
 static const int FEELER_INTERVAL = 120;
 /** The maximum number of entries in an 'inv' protocol message */
 static const unsigned int MAX_INV_SZ = 50000;
+/** The maximum number of entries in a 'bitmessage' protocol message */
+static const unsigned int MAX_BITMSG_SZ = 1000;
 /** The maximum number of new addresses to accumulate before announcing. */
 static const unsigned int MAX_ADDR_TO_SEND = 1000;
 /** Maximum length of incoming protocol messages (no message over 4 MB is currently acceptable). */
@@ -724,6 +727,11 @@ public:
     CAmount lastSentFeeFilter;
     int64_t nextSendTimeFeeFilter;
 
+    // BitMessages
+    std::vector<CBitMessage> vBitMessagesToSend;
+    CCriticalSection cs_bitmessages;
+    CBitMessageFilter bitMsgFilter;
+
     CNode(NodeId id, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn, SOCKET hSocketIn, const CAddress &addrIn, uint64_t nKeyedNetGroupIn, uint64_t nLocalHostNonceIn, const CAddress &addrBindIn, const std::string &addrNameIn = "", bool fInboundIn = false);
     ~CNode();
     CNode(const CNode&) = delete;
@@ -838,6 +846,15 @@ public:
     {
         LOCK(cs_inventory);
         vBlockHashesToAnnounce.push_back(hash);
+    }
+
+    void PushBitMessage(const CBitMessage& msg)
+    {
+        LOCK(cs_bitmessages);
+
+        if (bitMsgFilter.TryAdd(msg)) {
+            vBitMessagesToSend.push_back(msg);
+        }
     }
 
     void AskFor(const CInv& inv);

@@ -8,6 +8,7 @@
 
 #include <addrman.h>
 #include <arith_uint256.h>
+#include <bitmsgman.h>
 #include <blockencodings.h>
 #include <chainparams.h>
 #include <consensus/validation.h>
@@ -1043,6 +1044,13 @@ static void RelayAddress(const CAddress& addr, bool fReachable, CConnman* connma
     };
 
     connman->ForEachNodeThen(std::move(sortfunc), std::move(pushfunc));
+}
+
+static void RelayBitMessage(const CBitMessage& bitMsg, CConnman* connman)
+{
+    connman->ForEachNode([&bitMsg](CNode* pnode) {
+        pnode->PushBitMessage(bitMsg);
+    });
 }
 
 void static ProcessGetBlockData(CNode* pfrom, const Consensus::Params& consensusParams, const CInv& inv, CConnman* connman, const std::atomic<bool>& interruptMsgProc)
@@ -2844,6 +2852,24 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
     }
 
+    else if (strCommand == NetMsgType::BITMSG) {
+        std::vector<CBitMessage> vBitMessages;
+        vRecv >> vBitMessages;
+        if (vBitMessages.size() > MAX_BITMSG_SZ) {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), 20);
+            return error("message bitmessage size() = %u", vBitMessages.size());
+        }
+
+        for (const CBitMessage& msg : vBitMessages) {
+            if (bitMsgMan.Validate(msg)) {
+                bitMsgMan.AddReceived(msg);
+            }
+
+            RelayBitMessage(msg, connman);
+        }
+    }
+
     else if (strCommand == NetMsgType::NOTFOUND) {
         // We do not care about the NOTFOUND message, but logging an Unknown Command
         // message would be undesirable as we transmit it ourselves.
@@ -3683,6 +3709,28 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
                 pto->nextSendTimeFeeFilter = timeNow + GetRandInt(MAX_FEEFILTER_CHANGE_DELAY) * 1000000;
             }
         }
+    
+        //
+        // Message: bitmessage
+        //
+        std::vector<CBitMessage> vBitMsgs;
+        {
+            LOCK(pto->cs_bitmessages);
+            vBitMsgs.reserve(std::min<size_t>(pto->vBitMessagesToSend.size(), MAX_BITMSG_SZ));
+
+            // Add messages to send
+            for (const CBitMessage& msg : pto->vBitMessagesToSend) {
+                vBitMsgs.push_back(msg);
+                if (vBitMsgs.size() == MAX_BITMSG_SZ) {
+                    connman->PushMessage(pto, msgMaker.Make(NetMsgType::BITMSG, vBitMsgs));
+                    vBitMsgs.clear();
+                }
+            }
+
+            pto->vBitMessagesToSend.clear();
+        }
+        if (!vBitMsgs.empty())
+            connman->PushMessage(pto, msgMaker.Make(NetMsgType::BITMSG, vBitMsgs));
     }
     return true;
 }

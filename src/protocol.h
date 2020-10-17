@@ -237,6 +237,10 @@ extern const char *GETBLOCKTXN;
  * @since protocol version 70014 as described by BIP 152
  */
 extern const char *BLOCKTXN;
+/**
+ * Contains a BitMessage.
+ */
+extern const char* BITMSG;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -404,6 +408,30 @@ public:
 public:
     int type;
     uint256 hash;
+};
+
+/** bitmessage message data */
+class CBitMessage
+{
+public:
+    CBitMessage();
+    CBitMessage(const std::string& messageIn, int64_t messageTimeIn);
+
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(message);
+        READWRITE(messageTime);
+    }
+
+    friend bool operator<(const CBitMessage& a, const CBitMessage& b);
+
+    // TODO: make private (improves encapsulation)
+public:
+    std::string message;
+    int64_t messageTime;
 };
 
 #endif // BITCOIN_PROTOCOL_H

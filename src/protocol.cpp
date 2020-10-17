@@ -39,6 +39,7 @@ const char *SENDCMPCT="sendcmpct";
 const char *CMPCTBLOCK="cmpctblock";
 const char *GETBLOCKTXN="getblocktxn";
 const char *BLOCKTXN="blocktxn";
+const char* BITMSG = "bitmessage";
 } // namespace NetMsgType
 
 /** All known message types. Keep this in the same order as the list of
@@ -71,6 +72,7 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::CMPCTBLOCK,
     NetMsgType::GETBLOCKTXN,
     NetMsgType::BLOCKTXN,
+    NetMsgType::BITMSG,
 };
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 
@@ -182,6 +184,19 @@ std::string CInv::ToString() const
     } catch(const std::out_of_range &) {
         return strprintf("0x%08x %s", type, hash.ToString());
     }
+}
+
+CBitMessage::CBitMessage()
+{
+}
+
+CBitMessage::CBitMessage(const std::string& messageIn, int64_t messageTimeIn) : message(messageIn), messageTime(messageTimeIn)
+{
+}
+
+bool operator<(const CBitMessage& a, const CBitMessage& b)
+{
+    return (a.message < b.message);
 }
 
 const std::vector<std::string> &getAllNetMessageTypes()
