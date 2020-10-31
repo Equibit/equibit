@@ -4,7 +4,7 @@
 
 #include <rpc/server.h>
 
-#include <bitmsgman.h>
+#include <bitMsgMgr.h>
 #include <chainparams.h>
 #include <clientversion.h>
 #include <core_io.h>
@@ -39,7 +39,7 @@ UniValue pullrawmessages(const JSONRPCRequest& request)
     if (!g_connman)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
-    std::vector<CBitMessage> messages = bitMsgMan.PullReceived();
+    std::vector<CBitMessage> messages = bitMsgMgr.PullReceived();
 
     UniValue ret(UniValue::VARR);
 
@@ -54,7 +54,7 @@ UniValue sendrawmessage(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1 || request.params[0].isNull())
         throw std::runtime_error(
-            "sendrawmessage ( \"msg\" )\n"
+            "sendrawmessage \"msg\"\n"
             "\nSends a raw BitMessage out to all nodes in the network\n"
             "\nArguments:\n"
             "1. \"msg\"   (string, required) Specifies the content of the BitMessage that's being sent out.\n"
@@ -68,7 +68,7 @@ UniValue sendrawmessage(const JSONRPCRequest& request)
 
     CBitMessage msg(request.params[0].get_str(), GetTime());
 
-    if (bitMsgMan.Validate(msg)) {
+    if (bitMsgMgr.Validate(msg)) {
         // Request that each node send out the message on next processing pass
         g_connman->ForEachNode([&msg](CNode* pnode) {
             pnode->PushBitMessage(msg);

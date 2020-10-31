@@ -7,6 +7,7 @@
 
 #include <util.h>
 #include <utilstrencodings.h>
+#include <hash.h>
 
 #ifndef WIN32
 # include <arpa/inet.h>
@@ -192,11 +193,12 @@ CBitMessage::CBitMessage()
 
 CBitMessage::CBitMessage(const std::string& messageIn, int64_t messageTimeIn) : message(messageIn), messageTime(messageTimeIn)
 {
+    hash = Hash(message.begin(), message.end());
 }
 
 bool operator<(const CBitMessage& a, const CBitMessage& b)
 {
-    return (a.message < b.message);
+    return (a.hash < b.hash);
 }
 
 const std::vector<std::string> &getAllNetMessageTypes()

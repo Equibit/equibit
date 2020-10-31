@@ -4,17 +4,22 @@
 
 #include <bitmsgfilter.h>
 
+CBitMessageFilter::CBitMessageFilter(int pTimeToExpire)
+    : timeToExpire(pTimeToExpire)
+{
+}
+
 bool CBitMessageFilter::TryAdd(const CBitMessage& msg)
 {
-    int64_t timeLimit = GetTime() - (2 * 24 * 3600);
+    int64_t timeLimit = GetTime() - timeToExpire;
 
     if (msg.messageTime <= timeLimit) {
         return false;
     }
 
-    // TODO: Optimize this using a hash-based rolling time filter
+    // TODO: Optimize this using a lookup-based rolling time filter
     for (const CBitMessage& existingMsg : vMessages) {
-        if (msg.message == existingMsg.message) {
+        if (msg.hash == existingMsg.hash) {
             return false;
         }
     }
@@ -29,7 +34,7 @@ bool CBitMessageFilter::TryAdd(const CBitMessage& msg)
 void CBitMessageFilter::Prune()
 {
     std::vector<CBitMessage>::const_iterator pruneUpTo = vMessages.begin();
-    int64_t timeLimit = GetTime() - (2 * 24 * 3600);
+    int64_t timeLimit = GetTime() - timeToExpire;
 
     while (pruneUpTo != vMessages.end()) {
         if (pruneUpTo->messageTime > timeLimit) {

@@ -8,7 +8,7 @@
 
 #include <addrman.h>
 #include <arith_uint256.h>
-#include <bitmsgman.h>
+#include <bitMsgMgr.h>
 #include <blockencodings.h>
 #include <chainparams.h>
 #include <consensus/validation.h>
@@ -2862,11 +2862,16 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 
         for (const CBitMessage& msg : vBitMessages) {
-            if (bitMsgMan.Validate(msg)) {
-                bitMsgMan.AddReceived(msg);
-            }
+            // If the incoming message is valid, store it for retrieval and relay it on.
+            if (bitMsgMgr.Validate(msg)) {
+                bitMsgMgr.AddReceived(msg);
 
-            RelayBitMessage(msg, connman);
+                // Mark that we received this message from this node so we don't immediately relay it back there.
+                pfrom->MarkBitMessage(msg);
+
+                // Relay onto the other nodes.
+                RelayBitMessage(msg, connman);
+            }
         }
     }
 

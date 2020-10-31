@@ -14,16 +14,20 @@
 #include <vector>
 
 /** 
- * BitMessage filter - ensures that messages are only preserved for 2 days and never double-sent
+ * BitMessage filter - keeps a rolling log of messages sent in the past to
+ * avoid processing the same message multiple times.
  */
 class CBitMessageFilter
 {
 private:
+    int timeToExpire;
     std::vector<CBitMessage> vMessages;
 
     void Prune();
 
 public:
+    CBitMessageFilter(int pTimeToExpire);
+
     bool TryAdd(const CBitMessage& msg);
 };
 

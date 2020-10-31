@@ -417,7 +417,17 @@ public:
     CBitMessage();
     CBitMessage(const std::string& messageIn, int64_t messageTimeIn);
 
-    ADD_SERIALIZE_METHODS;
+    template <typename Stream>
+    void Serialize(Stream& s) const
+    {
+        NCONST_PTR(this)->SerializationOp(s, CSerActionSerialize());
+    }
+    template <typename Stream>
+    void Unserialize(Stream& s)
+    {
+        SerializationOp(s, CSerActionUnserialize());
+        hash = Hash(message.begin(), message.end());
+    }
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action)
@@ -430,6 +440,7 @@ public:
 
     // TODO: make private (improves encapsulation)
 public:
+    uint256 hash;
     std::string message;
     int64_t messageTime;
 };

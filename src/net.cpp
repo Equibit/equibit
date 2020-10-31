@@ -2702,7 +2702,8 @@ CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn
     nLocalHostNonce(nLocalHostNonceIn),
     nLocalServices(nLocalServicesIn),
     nMyStartingHeight(nMyStartingHeightIn),
-    nSendVersion(0)
+    nSendVersion(0),
+    bitMsgFilter(2 * 60)
 {
     nServices = NODE_NONE;
     hSocket = hSocketIn;

@@ -857,6 +857,13 @@ public:
         }
     }
 
+    void MarkBitMessage(const CBitMessage& msg)
+    {
+        LOCK(cs_bitmessages);
+
+        bitMsgFilter.TryAdd(msg);
+    }
+
     void AskFor(const CInv& inv);
 
     void CloseSocketDisconnect();

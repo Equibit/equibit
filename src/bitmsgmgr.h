@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef EQUIBIT_BITMSGMAN_H
-#define EQUIBIT_BITMSGMAN_H
+#ifndef EQUIBIT_BITMSGMGR_H
+#define EQUIBIT_BITMSGMGR_H
 
 #include <bitmsgfilter.h>
 #include <netaddress.h>
@@ -40,4 +40,4 @@ public:
 
 extern CBitMessageMgr bitMsgMgr;
 
-#endif // EQUIBIT_BITMSGMAN_H
+#endif // EQUIBIT_BITMSGMGR_H
