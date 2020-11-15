@@ -36,7 +36,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <PlatformToolSet>v120_xp</PlatformToolSet>
+    <PlatformToolSet>v142</PlatformToolSet>
     <OutputDirectory>debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <ConfigurationType>Application</ConfigurationType>
@@ -572,11 +572,11 @@ qwindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <None Include="$(ProjectDir)\..\..\src\qt\forms\addressbookpage.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\askpassphrasedialog.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\coincontroldialog.ui" />
-	<None Include="$(ProjectDir)\..\..\src\qt\forms\debugwindow.ui" />
+    <None Include="$(ProjectDir)\..\..\src\qt\forms\debugwindow.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\editaddressdialog.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\helpmessagedialog.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\intro.ui" />
-	<None Include="$(ProjectDir)\..\..\src\qt\forms\modaloverlay.ui" />
+    <None Include="$(ProjectDir)\..\..\src\qt\forms\modaloverlay.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\openuridialog.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\optionsdialog.ui" />
     <None Include="$(ProjectDir)\..\..\src\qt\forms\overviewpage.ui" />

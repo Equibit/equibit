@@ -8,6 +8,7 @@
 #include <util.h>
 #include <utilstrencodings.h>
 #include <hash.h>
+#include <streams.h>
 
 #ifndef WIN32
 # include <arpa/inet.h>
@@ -187,13 +188,66 @@ std::string CInv::ToString() const
     }
 }
 
-CBitMessage::CBitMessage()
+uint256 CBitMessage::ComputeDataHash() const
 {
+    CDataStream stream(0, 0);
+
+    data.Serialize(stream);
+
+    return ComputeHash((const unsigned char*)stream.data(), stream.size());
 }
 
-CBitMessage::CBitMessage(const std::string& messageIn, int64_t messageTimeIn) : message(messageIn), messageTime(messageTimeIn)
+uint256 CBitMessage::ComputeHash(const unsigned char* data, size_t len) const
 {
-    hash = Hash(message.begin(), message.end());
+    // The default hashing used by tx-builder in the Wallet is a double SHA256 hash.
+    CSHA256 hasher;
+    uint256 hash;
+    unsigned char hashIter[32] = {};
+
+    hasher.Write(data, len).Finalize(hashIter);
+    hasher.Reset();
+    hasher.Write(hashIter, sizeof(hashIter)).Finalize((unsigned char*)&hash);
+
+    return hash;
+}
+
+uint256 CBitMessage::ComputeMessageHash() const
+{
+    CDataStream stream(0, 0);
+
+    Serialize(stream);
+
+    return ComputeHash((const unsigned char*)stream.data(), stream.size());
+}
+
+bool CBitMessage::FromHex(const std::string& s)
+{
+    if (!IsHex(s)) {
+        LogPrint(BCLog::BITMSG, "bitmessage rejected as not hex string\n");
+        return false;
+    }
+
+    CDataStream stream(ParseHex(s), 0, 0);
+
+    try {
+        Unserialize(stream);
+    } catch (std::ios_base::failure &) {
+        LogPrint(BCLog::BITMSG, "bitmessage failed to deserialize\n");
+        return false;
+    }
+
+    hash = ComputeDataHash();
+
+    return true;
+}
+
+std::string CBitMessage::ToHex() const
+{
+    CDataStream stream(0, 0);
+
+    Serialize(stream);
+
+    return HexStr(stream.begin(), stream.end(), false);
 }
 
 bool operator<(const CBitMessage& a, const CBitMessage& b)

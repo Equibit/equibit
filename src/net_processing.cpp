@@ -2863,7 +2863,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         for (const CBitMessage& msg : vBitMessages) {
             // If the incoming message is valid, store it for retrieval and relay it on.
-            if (bitMsgMgr.Validate(msg)) {
+            if (bitMsgMgr.Validate(msg).empty()) {
                 bitMsgMgr.AddReceived(msg);
 
                 // Mark that we received this message from this node so we don't immediately relay it back there.

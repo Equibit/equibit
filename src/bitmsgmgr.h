@@ -27,6 +27,10 @@ private:
     CBitMessageFilter msgFilter;
     std::vector<CBitMessage> vUnreadMessages;
 
+    std::string ValidatePayload(const CBitMessage& msg) const;
+
+    bool VerifyProofOfWork(const CBitMessage& msg) const;
+
 public:
     CBitMessageMgr();
 
@@ -35,7 +39,7 @@ public:
 
     std::vector<CBitMessage> PullReceived();
 
-    bool Validate(const CBitMessage& msg);
+    std::string Validate(const CBitMessage& msg) const;
 };
 
 extern CBitMessageMgr bitMsgMgr;

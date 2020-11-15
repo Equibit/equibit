@@ -13,7 +13,7 @@ bool CBitMessageFilter::TryAdd(const CBitMessage& msg)
 {
     int64_t timeLimit = GetTime() - timeToExpire;
 
-    if (msg.messageTime <= timeLimit) {
+    if (msg.data.timestamp <= timeLimit) {
         return false;
     }
 
@@ -37,7 +37,7 @@ void CBitMessageFilter::Prune()
     int64_t timeLimit = GetTime() - timeToExpire;
 
     while (pruneUpTo != vMessages.end()) {
-        if (pruneUpTo->messageTime > timeLimit) {
+        if (pruneUpTo->data.timestamp > timeLimit) {
             break;
         }
         pruneUpTo++;

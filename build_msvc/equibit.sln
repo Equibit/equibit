@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "equibit-tx", "equibit-tx\eq
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "equibit-qt", "equibit-qt\equibit-qt.vcxproj", "{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "playground", "playground\playground.vcxproj", "{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,15 +173,23 @@ Global
 		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x64.Build.0 = Release|x64
 		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x86.ActiveCfg = Release|Win32
 		{9191918D-7DE3-4BE1-8A32-2F2CF4EE6840}.Release|x86.Build.0 = Release|Win32
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Debug|x64.ActiveCfg = Debug|x64
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Debug|x64.Build.0 = Debug|x64
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Debug|x86.ActiveCfg = Debug|Win32
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Debug|x86.Build.0 = Debug|Win32
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Release|x64.ActiveCfg = Release|x64
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Release|x64.Build.0 = Release|x64
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Release|x86.ActiveCfg = Release|Win32
+		{5CC2A9B3-BCBA-4060-91B2-9BE4A6847E30}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		        SolutionGuid = {DA7D16A6-E5F0-45B3-B194-C3FE64F1BFCD}
-		                                SolutionGuid = {D0CAE2D0-8DB1-4A0B-80EE-800AA6C64323}
-		                        SolutionGuid = {2FB733C9-24CB-4BA5-A26B-F43DAD7996B7}
-		                SolutionGuid = {4ABD1207-9A90-4EC9-A8EB-203638A2605D}
 		SolutionGuid = {A20B3367-968A-4B39-9CE5-CBD4FF41D03D}
+		                SolutionGuid = {4ABD1207-9A90-4EC9-A8EB-203638A2605D}
+		                        SolutionGuid = {2FB733C9-24CB-4BA5-A26B-F43DAD7996B7}
+		                                SolutionGuid = {D0CAE2D0-8DB1-4A0B-80EE-800AA6C64323}
+		        SolutionGuid = {DA7D16A6-E5F0-45B3-B194-C3FE64F1BFCD}
 	EndGlobalSection
 EndGlobal

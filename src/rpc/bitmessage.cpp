@@ -17,12 +17,11 @@
 #include <sync.h>
 #include <timedata.h>
 #include <ui_interface.h>
+#include <univalue.h>
 #include <util.h>
 #include <utilstrencodings.h>
 #include <version.h>
 #include <warnings.h>
-
-#include <univalue.h>
 
 UniValue pullrawmessages(const JSONRPCRequest& request)
 {
@@ -44,7 +43,7 @@ UniValue pullrawmessages(const JSONRPCRequest& request)
     UniValue ret(UniValue::VARR);
 
     for (const CBitMessage& msg : messages) {
-        ret.push_back(msg.message);
+        ret.push_back(msg.ToHex());
     }
 
     return ret;
@@ -66,16 +65,25 @@ UniValue sendrawmessage(const JSONRPCRequest& request)
     if (!g_connman)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
-    CBitMessage msg(request.params[0].get_str(), GetTime());
+    CBitMessage msg;
 
-    if (bitMsgMgr.Validate(msg)) {
+    if (!msg.FromHex(request.params[0].get_str())) {
+        throw JSONRPCError(RPC_BITMSG_INVALID, "Error: BitMessage did not read correctly");
+    }
+
+    std::string error = bitMsgMgr.Validate(msg);
+    
+    if (error.empty()) {
+        LogPrint(BCLog::BITMSG, "sending BitMessage into network (hash: %s)\n", msg.hash.ToString());
+
         // Request that each node send out the message on next processing pass
         g_connman->ForEachNode([&msg](CNode* pnode) {
             pnode->PushBitMessage(msg);
         });
     } 
     else {
-        throw JSONRPCError(RPC_BITMSG_INVALID, "Error: BitMessage did not validate");
+        LogPrint(BCLog::BITMSG, "%s\n", error);
+        throw JSONRPCError(RPC_BITMSG_INVALID, error);
     }
 
     return NullUniValue;

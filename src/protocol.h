@@ -410,30 +410,63 @@ public:
     uint256 hash;
 };
 
-/** bitmessage message data */
-class CBitMessage
+/** bitmessage messages */
+class CBitMessageData
 {
 public:
-    CBitMessage();
-    CBitMessage(const std::string& messageIn, int64_t messageTimeIn);
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(type);
+        READWRITE(timestamp);
+        READWRITE(timestamp_nanoseconds);
+        READWRITE(sender_public_key);
+        READWRITE(payload);
+    }
+
+    // TODO: make private (improves encapsulation)
+public:
+    std::string type;
+    uint64_t timestamp;
+    uint32_t timestamp_nanoseconds;
+    std::vector<unsigned char> sender_public_key;
+    std::string payload;
+};
+
+class CBitMessage
+{
+private:
+    uint256 ComputeHash(const unsigned char* data, size_t len) const;
+
+public:
+    uint256 ComputeDataHash() const;
+    uint256 ComputeMessageHash() const;
+
+    bool FromHex(const std::string& s);
+
+    std::string ToHex() const;
 
     template <typename Stream>
     void Serialize(Stream& s) const
     {
         NCONST_PTR(this)->SerializationOp(s, CSerActionSerialize());
     }
+
     template <typename Stream>
     void Unserialize(Stream& s)
     {
         SerializationOp(s, CSerActionUnserialize());
-        hash = Hash(message.begin(), message.end());
+        hash = ComputeDataHash();
     }
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action)
     {
-        READWRITE(message);
-        READWRITE(messageTime);
+        READWRITE(data);
+        READWRITE(signature);
+        READWRITE(nonce);
     }
 
     friend bool operator<(const CBitMessage& a, const CBitMessage& b);
@@ -441,8 +474,9 @@ public:
     // TODO: make private (improves encapsulation)
 public:
     uint256 hash;
-    std::string message;
-    int64_t messageTime;
+    CBitMessageData data;
+    std::vector<unsigned char> signature;
+    uint64_t nonce;
 };
 
 #endif // BITCOIN_PROTOCOL_H
